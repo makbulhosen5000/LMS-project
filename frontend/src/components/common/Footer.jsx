@@ -16,10 +16,10 @@ export const Footer = () => {
           <div className="mb-6 md:mb-0">
             <Link to="/" className="flex items-center space-x-2">
               <span className="text-2xl font-bold text-white">MAK</span>
-              <span className="text-2xl font-bold text-yellow-400">Fashion</span>
+              <span className="text-2xl font-bold text-yellow-400">Learning</span>
             </Link>
             <p className="text-sm mt-2 text-gray-400">
-              © 2025 MAK Fashion. All rights reserved.
+              © 2025 MAK Learning. All rights reserved.
             </p>
           </div>
 
@@ -30,16 +30,6 @@ export const Footer = () => {
               <li>
                 <Link to="/" className="hover:text-yellow-400 transition">
                   Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/skill" className="hover:text-yellow-400 transition">
-                  Skills
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects" className="hover:text-yellow-400 transition">
-                  Projects
                 </Link>
               </li>
               <li>

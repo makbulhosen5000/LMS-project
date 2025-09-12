@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Star, ShoppingCart } from "lucide-react";
 import { FaRegUser } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { apiUrl } from "../../components/Http";
+import { apiUrl } from "../../components/common/Http";
 import { toast } from "react-toastify";
 import { CartContext } from "../../components/provider/CartProvider";
 

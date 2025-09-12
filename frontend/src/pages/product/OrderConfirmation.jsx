@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { apiUrl, userToken } from "../../components/Http";
+import { apiUrl, userToken } from "../../components/common/Http";
 import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from "../../components/common/loader/Loader";
+import Loader from "../../components/common/Loader";
 
 export default function OrderConfirmation() {
   const [order, setOrder] = useState([]);

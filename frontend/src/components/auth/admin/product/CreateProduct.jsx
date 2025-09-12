@@ -1,7 +1,7 @@
 import React, { useEffect, useState,useRef, useMemo } from 'react'
 import Sidebar from '../dashboard/Sidebar'
 import { Link, useNavigate } from 'react-router-dom'
-import { adminToken, apiUrl } from '../../../Http';
+import { adminToken, apiUrl } from '../../../common/Http';
 import { set, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';

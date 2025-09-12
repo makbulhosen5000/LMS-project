@@ -3,10 +3,10 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { toast } from "react-toastify";
-import { apiUrl, userToken } from "../../../Http";
+import { apiUrl, userToken } from "../../../common/Http";
 import UserSidebar from "../user-dashboard/UserSidebar";
 import UserTopbar from "../user-dashboard/UserTopBar";
-import Loader from "../../../common/loader/Loader";
+import Loader from "../../../common/Loader";
 
 
 function UserOrderDetails() {

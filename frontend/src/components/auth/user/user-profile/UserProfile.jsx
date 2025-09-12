@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import UserSidebar from "../user-dashboard/UserSidebar";
 import UserTopbar from "../user-dashboard/UserTopBar";
-import { apiUrl, userToken } from "../../../Http";
+import { apiUrl, userToken } from "../../../common/Http";
 import { toast } from "react-toastify";
-import Loader from "../../../common/loader/Loader";
+import Loader from "../../../common/Loader";
 
 function UserProfile() {
   const [loading, setLoading] = useState(true);

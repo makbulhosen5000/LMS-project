@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { apiUrl } from '../../components/Http';
-import Loader from '../../components/common/loader/Loader';
+import { apiUrl } from '../../components/common/Http';
+import Loader from '../../components/common/Loader';
 import { Helmet } from 'react-helmet-async';
 
 export default function Shop() {

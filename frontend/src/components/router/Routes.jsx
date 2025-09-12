@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layouts/Main";
-import ErrorMessage from "../common/errors/ErrorMessage";
-import Home from "../common/home/Home";
+import ErrorMessage from "../common/ErrorMessage";
+import Home from "../pages/home/Home";
 import Cart from "../../pages/product/Cart";
 import Checkout from "../../pages/product/Checkout";
 import Login from "../auth/admin/admin-auth/Login";
@@ -31,6 +31,8 @@ import UserOrderDetails from "../auth/user/user-order/userOrderDetails";
 import UserProfile from "../auth/user/user-profile/UserProfile";
 import CreateShipping from "../auth/admin/shipping/CreateShipping";
 import UserPasswordChange from "../auth/user/user-profile/UserPasswordChange";
+import Courses from "../pages/course/Courses";
+import CourseDetails from "../pages/course/CourseDetails";
 
 
 export const router = createBrowserRouter([
@@ -44,9 +46,17 @@ export const router = createBrowserRouter([
             element:<Home/>
         },
         {
+          path:"/courses",
+          element:<Courses/>
+        },
+        {
+          path:"/course-details",
+          element:<CourseDetails/>
+        },
+        {
           path:"/shop",
           element:<Shop/>
-      },
+        },
         {
           path:"/product/:id",
           element:<Product/>

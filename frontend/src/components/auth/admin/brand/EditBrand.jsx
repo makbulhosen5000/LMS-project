@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../dashboard/Sidebar';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { adminToken, apiUrl } from '../../../Http';
+import { adminToken, apiUrl } from '../../../common/Http';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Topbar from '../dashboard/Topbar';

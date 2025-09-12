@@ -2,7 +2,7 @@ import React, {useContext, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff,LogIn } from 'lucide-react'; 
-import { apiUrl } from '../../../Http';
+import { apiUrl } from '../../../common/Http';
 import { toast } from 'react-toastify';
 import { AdminAuthContext } from '../../../provider/AdminAuthProvider';
 import { useForm } from 'react-hook-form';

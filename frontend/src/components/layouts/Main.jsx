@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 
 import { Outlet } from 'react-router-dom';
-import Navbar from '../common/navbar/Navbar';
-import { Footer } from '../common/footer/Footer';
+import Navbar from '../common/Navbar';
+import { Footer } from '../common/Footer';
 
 const Main = () => {
 

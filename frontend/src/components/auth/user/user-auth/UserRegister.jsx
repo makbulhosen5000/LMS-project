@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, UserPlus } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
-import { apiUrl } from '../../../Http'
+import { apiUrl } from '../../../common/Http'
 
 
 export default function UserRegister() {

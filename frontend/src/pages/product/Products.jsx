@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { apiUrl } from '../../components/Http';
-import Loader from '../../components/common/loader/Loader';
+import Loader from '../../components/pages/loader/Loader';
 
 export default function Products() {
     // get ,category,brand, latest products,single product from the API
@@ -174,159 +174,172 @@ export default function Products() {
  
   return (
     <>
-    <section  className="bg-gray-200 mt-5">
+    <section  className="bg-gray-200">
         <div className="container mx-auto">
-          <div className='flex sm:flex-auto gap-3 justify-between items-center p-4 bg-white shadow-md rounded-lg'>
-            <div>
-                <h1 className='font-bold text-3xl text-red-600'>Categories</h1>
-                <div className='p-1 flex flex-auto gap-2'>
-                    {
-                        categories && categories.map((category) => (
-                            <div key={category?.id}>
-                                <input type="checkbox" 
-                                defaultChecked = {
-                                          searchParams.get('category')
-                                          ?
-                                          searchParams.get('category').includes(category?.id)
-                                          :false
-                                          }
-
-                                value={category?.id}
-                                onClick={handleCategory}
-                                />  
-                                <label> {category?.name}</label>
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
-            <div>
-                <h1 className='font-bold text-3xl text-red-600'>Brands</h1>
-                <div className='p-1 flex flex-auto gap-2'>
-                {
-                    brands && brands.map((brand) => (
-                        <div key={brand?.id}>
-                            <input type="checkbox"
-                            defaultChecked = {
-                              searchParams.get('brand')
-                              ?
-                              searchParams.get('brand').includes(brand?.id)
-                              :false
-                              }
-                            value={brand?.id}
-                            onClick={handleBrand}
-                            />  
-                            <label> {brand?.name}</label>
-                        </div>
-                    ))
-                }
-                </div>
-            </div>
+          {/* Category section */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <h2 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
+              Explore Categories
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Web Development
+                  </h3>
+                </div>
+              </div>
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Web Development
+                  </h3>
+                </div>
+              </div>
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Web Development
+                  </h3>
+                </div>
+              </div>
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Web Development
+                  </h3>
+                </div>
+              </div>
+
+            </div>
           </div>
-            {/* Product section */}
-            <div className="py-5">
-                    <h2 className="text-2xl md:text-2xl font-bold mb-4 text-red-600">Shop</h2>
-                    <div className='grid grid-1 sm:grid-col-1 md:grid-cols-4 lg:grid-cols-5 gap-3'>
-                     {
-                        loading ?
-                        <Loader/>
-                        :
-                        products && products.map((product) => (
-                            <div className=" max-w-sm mx-auto bg-white/70 backdrop-blur-md border border-black  rounded-2xl shadow-2xl overflow-hidden transition transform hover:scale-105 duration-300" key={product?.id}>
-                                <div className="relative">
-                                    <img className="w-full h-64 object-cover" src={product?.image_url} alt="Product image"/>
-                                </div>
-                                <div className="p-5">
-                                    <h3 className="text-lg text-gray-800">{product?.title}</h3>
-                                    {/* <p className="text-sm text-gray-600 mt-1">
-                                    {product?.short_description?.slice(0, 100)}
-                                    </p> */}
-                                    <div className="mt-4 flex items-center justify-between">
-                                    <div className="flex items-center space-x-2">
-                                        {      
-                                            product?.discount_price && 
-                                            <span className="text-lg font-semibold text-gray-800">${product?.discount_price}</span>
-                                        }
-                                            <span className="text-sm line-through text-gray-400">${product?.price}</span>
-                                    </div>
-                                    <Link to={`/product/${product.id}`}> 
-                                    <button className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition duration-200">
-                                        Buy Now
-                                    </button>
-                                    </Link> 
-                                    </div>
-                                </div>
-                            </div>
-                        ))
-                      }
-                    </div>
-            </div>
-             
-            {/* latest product section */}
-            <div className='mb-4'>             
-                <h2 className="text-2xl md:text-2xl font-bold mb-4 text-red-600">Latest Product</h2>
-                <div className='grid sm:grid-col-1 md:grid-cols-5 lg:grid-cols-5 gap-4'>
-                {
-                    latestProducts && latestProducts.map((latestProduct) => (
-                        <div className=" max-w-sm mx-auto bg-white/70 backdrop-blur-md border border-black  rounded-2xl shadow-2xl overflow-hidden transition transform hover:scale-105 duration-300" key={latestProduct.id}>
-                            <div className="relative">
-                                <img className="w-full h-64 object-fit" src={latestProduct?.image_url} alt="Product image"/>
-                            </div>
-                            <div className="p-5">
-                                <h3 className="text-lg text-gray-800">{latestProduct?.title}</h3>
-                                <div className="mt-4 flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                    {      
-                                        latestProduct?.discount_price && 
-                                        <span className="text-lg font-semibold text-gray-800">${latestProduct?.discount_price}</span>
-                                    }
-                                        <span className="text-sm line-through text-gray-400">${latestProduct?.price}</span>
-                                </div>
-                                <Link to={`/product/${latestProduct.id}`}> 
-                                <button className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition duration-200">
-                                    Buy Now
-                                </button>
-                                </Link> 
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                  }
+          {/* Video Section */}
+     
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <h2 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
+              Explore Courses
+            </h2>
+
+            {/* Video Section */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {/* Video Card */}
+                <div className="relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 cursor-pointer">
+                  {/* Thumbnail */}
+                  <img
+                    src="https://images.unsplash.com/photo-1581091215364-9f86534f3480?q=80&w=400&auto=format&fit=crop"
+                    alt="Video"
+                    className="w-full h-48 object-cover transform group-hover:scale-105 transition duration-300"
+                  />
+
+                  {/* Duration Badge */}
+                  <span className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs font-semibold px-2 py-1 rounded-lg">
+                    12:34
+                  </span>
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                    <span className="text-white font-bold px-3 py-1 bg-green-600 rounded-lg">Watch</span>
+                  </div>
+
+                  {/* Video Title & Description */}
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                      React Tutorial for Beginners
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      Learn React basics step by step.
+                    </p>
+                  </div>
                 </div>
-            </div>
-             {/* featured product section */}
-            <div className=" mb-4 ">
-                <h2 className="text-2xl md:text-2xl font-bold mb-4 text-red-600">Feature Product</h2>
-                <div className='grid grid-1 sm:grid-col-1 md:grid-cols-4 lg:grid-cols-5 gap-4'>
-                {
-                    featuredProducts && featuredProducts.map((featuredProduct) => (
-                        <div className=" max-w-sm mx-auto bg-white/70 backdrop-blur-md border border-black  rounded-2xl shadow-2xl overflow-hidden transition transform hover:scale-105 duration-300" key={featuredProduct.id}>
-                            <div className="relative">
-                                <img className="w-full h-64 object-fit" src={featuredProduct?.image_url} alt="Product image"/>
-                            </div>
-                            <div className="p-5">
-                                <h3 className="text-lg text-gray-800">{featuredProduct?.title}</h3>
-                                <div className="mt-4 flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                    {      
-                                        featuredProduct?.discount_price && 
-                                        <span className="text-lg font-semibold text-gray-800">${featuredProduct?.discount_price}</span>
-                                    }
-                                        <span className="text-sm line-through text-gray-400">${featuredProduct?.price}</span>
-                                </div>
-                                <Link to={`/product/${featuredProduct.id}`}> 
-                                <button className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition duration-200">
-                                    Buy Now
-                                </button>
-                                </Link> 
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                  }
+                <div className="relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 cursor-pointer">
+                  {/* Thumbnail */}
+                  <img
+                    src="https://images.unsplash.com/photo-1581091215364-9f86534f3480?q=80&w=400&auto=format&fit=crop"
+                    alt="Video"
+                    className="w-full h-48 object-cover transform group-hover:scale-105 transition duration-300"
+                  />
+
+                  {/* Duration Badge */}
+                  <span className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs font-semibold px-2 py-1 rounded-lg">
+                    12:34
+                  </span>
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                    <span className="text-white font-bold px-3 py-1 bg-green-600 rounded-lg">Watch</span>
+                  </div>
+
+                  {/* Video Title & Description */}
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                      React Tutorial for Beginners
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      Learn React basics step by step.
+                    </p>
+                  </div>
                 </div>
-            </div>
+                <div className="relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 cursor-pointer">
+                  {/* Thumbnail */}
+                  <img
+                    src="https://images.unsplash.com/photo-1581091215364-9f86534f3480?q=80&w=400&auto=format&fit=crop"
+                    alt="Video"
+                    className="w-full h-48 object-cover transform group-hover:scale-105 transition duration-300"
+                  />
+
+                  {/* Duration Badge */}
+                  <span className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs font-semibold px-2 py-1 rounded-lg">
+                    12:34
+                  </span>
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                    <span className="text-white font-bold px-3 py-1 bg-green-600 rounded-lg">Watch</span>
+                  </div>
+
+                  {/* Video Title & Description */}
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                      React Tutorial for Beginners
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      Learn React basics step by step.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 cursor-pointer">
+                  {/* Thumbnail */}
+                  <img
+                    src="https://images.unsplash.com/photo-1581091215364-9f86534f3480?q=80&w=400&auto=format&fit=crop"
+                    alt="Video"
+                    className="w-full h-48 object-cover transform group-hover:scale-105 transition duration-300"
+                  />
+
+                  {/* Duration Badge */}
+                  <span className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs font-semibold px-2 py-1 rounded-lg">
+                    12:34
+                  </span>
+
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                    <span className="text-white font-bold px-3 py-1 bg-green-600 rounded-lg">Watch</span>
+                  </div>
+
+                  {/* Video Title & Description */}
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                      React Tutorial for Beginners
+                    </h3>
+                    <p className="text-gray-500 text-sm">
+                      Learn React basics step by step.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+
+          </div>    
         </div>
     </section>
     

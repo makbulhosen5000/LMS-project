@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Loader from '../../../common/loader/Loader';
-import { apiUrl, userToken } from '../../../Http';
+import Loader from '../../../common/Loader';
+import { apiUrl, userToken } from '../../../common/Http';
 import UserSidebar from '../user-dashboard/UserSidebar';
 import UserTopbar from '../user-dashboard/UserTopBar';
 

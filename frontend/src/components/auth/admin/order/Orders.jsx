@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../dashboard/Sidebar';
 import Topbar from '../dashboard/Topbar';
-import Loader from '../../../common/loader/Loader';
+import Loader from '../../../common/Loader';
 import Footer from '../dashboard/Footer';
-import { adminToken, apiUrl } from '../../../Http';
+import { adminToken, apiUrl } from '../../../common/Http';
 
 
 

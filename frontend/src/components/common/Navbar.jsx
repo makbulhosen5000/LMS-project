@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaCartPlus, FaRegUserCircle } from "react-icons/fa";
-import { CartContext } from "../../provider/CartProvider";
-import { UserAuthContext } from "../../provider/UserAuthProvider";
+import { CartContext } from "../provider/CartProvider";
+import { UserAuthContext } from "../provider/UserAuthProvider";
 
 const Navbar = () => {
   const location = useLocation();
@@ -23,6 +23,9 @@ const Navbar = () => {
     <>
       <Link to="/" className={navLinkClass("/")}>
         Home
+      </Link>
+      <Link to="/courses" className={navLinkClass("/shop")}>
+        Courses
       </Link>
       <Link to="/shop" className={navLinkClass("/shop")}>
         Shop
@@ -58,7 +61,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="backdrop-blur-md bg-gray-900/80 sticky top-0 z-50 shadow-lg border-b border-gray-700">
+    <nav className="backdrop-blur-md bg-gray-900 sticky top-0 z-50 shadow-lg border-b border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -67,7 +70,7 @@ const Navbar = () => {
               <span className="font-extrabold text-2xl text-white tracking-wide">
                 MAK
               </span>
-              <span className="font-extrabold text-yellow-400">Fashion</span>
+              <span className="font-extrabold text-yellow-400">Learning</span>
             </Link>
           </div>
 

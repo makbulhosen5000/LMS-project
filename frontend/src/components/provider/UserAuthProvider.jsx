@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 export const UserAuthContext = createContext();
 
 export const UserAuthProvider = ({ children }) => {
-  const userInfo = localStorage.getItem("userInfo");
-  const [user,setUser] = useState(userInfo);
+  const userInfoLms = localStorage.getItem("userInfoLms");
+  const [user,setUser] = useState(userInfoLms);
   
   
   const login = (user) => {
@@ -15,7 +15,7 @@ export const UserAuthProvider = ({ children }) => {
   };
 
   const logOut = () => {
-    localStorage.removeItem("userInfo");
+    localStorage.removeItem("userInfoLms");
     toast.success("Logout successful");
     setUser(null);
     

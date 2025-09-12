@@ -33,6 +33,7 @@ import CreateShipping from "../auth/admin/shipping/CreateShipping";
 import UserPasswordChange from "../auth/user/user-profile/UserPasswordChange";
 import Courses from "../pages/course/Courses";
 import CourseDetails from "../pages/course/CourseDetails";
+import MyCourses from "../auth/user/user-courses/MyCourses";
 
 
 export const router = createBrowserRouter([
@@ -66,6 +67,14 @@ export const router = createBrowserRouter([
           element:(
             <UserPrivateRoute>
              <Cart/>
+            </UserPrivateRoute>
+          )
+        },
+        {
+          path:"/account/user/my-courses",
+          element:(
+            <UserPrivateRoute>
+             <MyCourses/>
             </UserPrivateRoute>
           )
         },

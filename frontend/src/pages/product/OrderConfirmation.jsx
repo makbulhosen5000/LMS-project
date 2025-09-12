@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { apiUrl, userToken } from "../../components/common/Http";
+import { apiUrl, userToken } from "../../components/common/Config";
 import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../../components/common/Loader";

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { UserAuthContext } from '../../../provider/UserAuthProvider';
-import { User, ShoppingCart,KeyRound, LogOut } from 'lucide-react'; // Icons
+import { User, ShoppingCart,KeyRound, LogOut,School,GraduationCap } from 'lucide-react'; // Icons
 
 export default function UserSidebar() {
     const { logOut } = useContext(UserAuthContext);
@@ -27,6 +27,12 @@ export default function UserSidebar() {
             <nav className="space-y-3">
                 <Link to="/account/user/profile" className={getLinkClass("/account/user/profile")}>
                     <User size={18} /> Profile
+                </Link>
+                <Link to="/account/user/profile" className={getLinkClass("/account/user/profile")}>
+                    <School size={18} /> My Learning
+                </Link>
+                <Link to="/account/user/profile" className={getLinkClass("/account/user/profile")}>
+                    <GraduationCap size={18} /> My Courses
                 </Link>
                 <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>
                     <ShoppingCart size={18} /> Orders

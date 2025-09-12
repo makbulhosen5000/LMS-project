@@ -3,7 +3,7 @@ import Sidebar from '../dashboard/Sidebar';
 import { Link } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import { adminToken, apiUrl } from '../../../common/Http';
+import { adminToken, apiUrl } from '../../../common/Config';
 import Loader from '../../../common/Loader';
 import RecordNotFound from '../../../common/RecordNotFound';
 import { toast } from 'react-toastify';

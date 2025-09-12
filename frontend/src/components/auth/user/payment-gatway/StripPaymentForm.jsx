@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { CreditCard, MapPin, ShoppingBag } from "lucide-react";
 import { toast } from "react-toastify";
-import { apiUrl, userToken } from "../../../common/Http";
+import { apiUrl, userToken } from "../../../common/Config";
 import { CartContext } from "../../../provider/CartProvider";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 

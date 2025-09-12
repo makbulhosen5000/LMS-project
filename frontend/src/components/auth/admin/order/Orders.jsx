@@ -4,7 +4,7 @@ import Sidebar from '../dashboard/Sidebar';
 import Topbar from '../dashboard/Topbar';
 import Loader from '../../../common/Loader';
 import Footer from '../dashboard/Footer';
-import { adminToken, apiUrl } from '../../../common/Http';
+import { adminToken, apiUrl } from '../../../common/Config';
 
 
 

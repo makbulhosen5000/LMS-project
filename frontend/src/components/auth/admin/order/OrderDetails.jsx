@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
-import { adminToken, apiUrl } from "../../../common/Http";
+import { adminToken, apiUrl } from "../../../common/Config";
 import Sidebar from "../dashboard/Sidebar";
 import Topbar from "../dashboard/Topbar";
 import Footer from "../dashboard/Footer";

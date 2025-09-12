@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { adminToken, apiUrl } from '../../../common/Http';
+import { adminToken, apiUrl } from '../../../common/Config';
 import Topbar from '../dashboard/Topbar';
 import Sidebar from '../dashboard/Sidebar';
 import Footer from '../dashboard/Footer';

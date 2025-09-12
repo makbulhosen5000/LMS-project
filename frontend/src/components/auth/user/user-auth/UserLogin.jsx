@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, LogIn } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
-import { apiUrl } from '../../../common/Http'
+import { apiUrl } from '../../../common/Config'
 import { UserAuthContext } from '../../../provider/UserAuthProvider'
 
 export default function UserLogin() {

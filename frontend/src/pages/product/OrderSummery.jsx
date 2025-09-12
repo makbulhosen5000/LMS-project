@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { apiUrl, userToken } from "../../components/common/Http";
+import { apiUrl, userToken } from "../../components/common/Config";
 import { useParams } from "react-router-dom";
 
 export default function OrderSummery () {

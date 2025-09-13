@@ -34,6 +34,7 @@ export default function UserLogin() {
 
       const result = await response.json()
       if (result.status == 200) {
+        toast.success(result.message);
         const userInfoLms = {
           token: result.token,
           id: result.id,
@@ -41,8 +42,7 @@ export default function UserLogin() {
         }
         localStorage.setItem("userInfoLms", JSON.stringify(userInfoLms))
         login(userInfoLms)
-         toast.success(result.message);
-        navigate('/account/user/dashboard')
+         navigate('/account/user/dashboard')
       } else {
         toast.error(result.message)
       }

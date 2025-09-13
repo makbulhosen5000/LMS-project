@@ -28,10 +28,10 @@ export default function UserSidebar() {
                 <Link to="/account/user/profile" className={getLinkClass("/account/user/profile")}>
                     <User size={18} /> Profile
                 </Link>
-                <Link to="/account/user/my-enrollment" className={getLinkClass("/account/user/profile")}>
+                <Link to="/account/user/my-enrollment" className={getLinkClass("/account/user/my-enrollment")}>
                     <School size={18} /> My Enrollment
                 </Link>
-                <Link to="/account/user/my-courses" className={getLinkClass("/account/user/profile")}>
+                <Link to="/account/user/my-courses" className={getLinkClass("/account/user/my-courses")}>
                     <GraduationCap size={18} /> My Courses
                 </Link>
                 <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>

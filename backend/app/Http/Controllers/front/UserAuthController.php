@@ -69,6 +69,7 @@ class UserAuthController extends Controller
          // Return response
          return response()->json([
              'status' => '200',
+             'message' => 'User logged in successfully',
              'token' => $token,
              'id' => $user->id,
              'name' => $user->name,

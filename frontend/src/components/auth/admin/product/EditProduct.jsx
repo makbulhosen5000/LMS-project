@@ -166,7 +166,7 @@ function EditProduct({ placeholder }) {
     const formData = new FormData();
     const file = e.target.files[0]; 
     formData.append('image', file);
-    formData.append('product_id', id); // ✅ Add this line — `id` must be your current product ID
+    formData.append('product_id', id); // id must be current product ID
   
     setDisable(true);
   

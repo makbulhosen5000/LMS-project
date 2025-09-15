@@ -64,17 +64,26 @@ const CourseEdit = () => {
             'Accept': 'application/json',
             'Authorization': `Bearer ${userTokenLms()}`,
           },
-          body: JSON.stringify(data), 
+          body: JSON.stringify(data),
         });
     
-        const result = await response.json();
+        let result = {};
+        try {
+          result = await response.json(); // handle JSON parse errors safely
+        } catch (e) {
+          console.warn("No JSON response body");
+        }
+    
         if (response.ok) {
-          toast.success(result.message);
+          toast.success(result.message || "Course updated successfully");
         } else {
-           const formErrors = result.errors || {}
-        Object.keys(formErrors).forEach((field) => {
-          setError(field, { message: formErrors[field][0] })
-        })
+          // Show validation errors if available
+          if (result.errors) {
+            Object.keys(result.errors).forEach((field) => {
+              setError(field, { message: result.errors[field][0] });
+            });
+          }
+          toast.error(result.message || "Failed to update course");
         }
       } catch (error) {
         console.error("Error updating course:", error);
@@ -83,8 +92,7 @@ const CourseEdit = () => {
         setDisable(false);
       }
     };
-
-
+    
 
     // it will return courses,language,category,level
     const courseMetaData = async () => {

@@ -43,37 +43,42 @@ class OutcomeController extends Controller
         ], 200);
     }
     // this method update outcome
-    public function update(Request $request,$id){
-        
-        $outcome = Outcome::find($id);
-        if(!$outcome){
-            return response()->json([
-                "status"=>404,
-                "message"=>"Outcome not found"
-            ]);
-        }
-        $validator = Validator::make($request->all(),[
-            'outcome'=>'required',
-        ]);
-        if($validator->fails()){
-            return response()->json([
-                "status"=>422,
-                "errors"=>$validator->messages()
-            ]);
-        }
+    public function update(Request $request, $id)
+{
+    $outcome = Outcome::find($id);
 
-       
-        $outcome->course_id = $request->course_id;
-        $outcome->text = $request->outcome;
-        $outcome->sort_order = 1000;
-        $outcome->save();
-
+    if (!$outcome) {
         return response()->json([
-            "status"=>201,
-            "message"=>"Outcome updated successfully",
-            "data"=>$outcome
-        ]);
+            "status" => 404,
+            "message" => "Outcome not found"
+        ], 404);
     }
+
+    $validator = Validator::make($request->all(), [
+        'outcome'   => 'required|string|max:255',
+        'course_id' => 'sometimes|exists:courses,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            "status" => 422,
+            "errors" => $validator->messages()
+        ], 422);
+    }
+
+    // Update fields
+    $outcome->course_id = $request->course_id;
+    $outcome->text = $request->outcome;
+
+    $outcome->save();
+
+    return response()->json([
+        "status" => 200,
+        "message" => "Outcome updated successfully",
+        "data" => $outcome
+    ], 200);
+}
+
 
     // this method delete outcome
     public function destroy($id){

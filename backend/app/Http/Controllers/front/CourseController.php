@@ -10,6 +10,7 @@ use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
 class CourseController extends Controller
 {
     // this method return all course for specific user 
@@ -55,44 +56,52 @@ class CourseController extends Controller
         ], 200);
     }
     // this method update a specific course by id
-    public function update($id,Request $request){
-        
-        $course = Course::find($id);
-        if (!$course) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Course not found',
-            ], 404);
-        }
-
-        $rule = [
-            'title' => 'required',
-            'category' => 'required',
-            'level' => 'required',
-            'language' => 'required',
-            'price' => 'required',
-        ];
-        $validator = Validator::make($request->all(), $rule);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 404,
-                'message' => $validator->errors()->first(),
-            ], 404);
-        }
-        $course->title = $request->title;
-        $course->category_id = $request->category;
-        $course->level_id = $request->level;
-        $course->language_id = $request->language;
-        $course->description = $request->description;
-        $course->price = $request->price;
-        $course->cross_price = $request->cross_price;
-        $course->save();
+    public function update($id, Request $request)
+    {
+    $course = Course::find($id);
+    if (!$course) {
         return response()->json([
-            'status' => 200,
-            'data' => $course,
-            'message' => 'Course Updated successfully',
-        ], 200);
+            'message' => 'Course not found',
+        ], 404);
     }
+
+    $rules = [
+        'title' => 'required|string|max:255',
+        'category' => 'required|integer',
+        'level' => 'required|integer',
+        'language' => 'required|integer',
+        'price' => 'required|numeric',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    $course->title = $request->title;
+    $course->category_id = $request->category;
+    $course->level_id = $request->level;
+    $course->language_id = $request->language;
+    $course->price = $request->price;
+
+    if ($request->has('description')) {
+        $course->description = $request->description;
+    }
+    if ($request->has('cross_price')) {
+        $course->cross_price = $request->cross_price;
+    }
+
+    $course->save();
+
+    return response()->json([
+        'message' => 'Course updated successfully',
+        'data' => $course,
+    ], 200);
+}
 
     // this method return categories,language and level metadata  
     public function metaData(){

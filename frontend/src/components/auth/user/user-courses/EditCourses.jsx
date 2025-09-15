@@ -5,6 +5,7 @@ import { apiUrl, userTokenLms } from "../../../common/Config";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import ManageOutcome from "./ManageOutcome";
 
 const CourseEdit = () => {
   const [categories, setCategories] = useState([]);
@@ -82,7 +83,8 @@ const CourseEdit = () => {
         setDisable(false);
       }
     };
-    
+
+
 
     // it will return courses,language,category,level
     const courseMetaData = async () => {
@@ -284,28 +286,7 @@ const CourseEdit = () => {
               {/* Right Section */}
               <div className="space-y-6">
                 {/* Outcome */}
-                <div className="bg-white p-6 rounded-xl shadow">
-                  <h3 className="text-lg font-semibold text-purple-600 mb-2">
-                    Outcome
-                  </h3>
-                  <input
-                    type="text"
-                    placeholder="Add an outcome"
-                    className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none mb-2"
-                  />
-                  <button className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition mb-4">
-                    Save
-                  </button>
-
-                  <ul className="space-y-2 text-sm text-gray-700">
-                    <li className="bg-gray-100 px-3 py-2 rounded">
-                      Write and structure a basic HTML document
-                    </li>
-                    <li className="bg-gray-100 px-3 py-2 rounded">
-                      Understand how the web works from a developer's perspective
-                    </li>
-                  </ul>
-                </div>
+                <ManageOutcome/>
 
                 {/* Requirements */}
                 <div className="bg-white p-6 rounded-xl shadow">

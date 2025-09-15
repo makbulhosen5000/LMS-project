@@ -54,6 +54,7 @@ class CourseController extends Controller
             'data' => $course,
         ], 200);
     }
+    // this method update a specific course by id
     public function update($id,Request $request){
         
         $course = Course::find($id);
@@ -78,13 +79,13 @@ class CourseController extends Controller
                 'message' => $validator->errors()->first(),
             ], 404);
         }
-        $course->title = $request->input(key: 'title');
-        $course->category_id = $request->input(key: 'category');
-        $course->level_id = $request->input(key: 'level');
-        $course->language_id = $request->input(key: 'language');
-        $course->description = $request->input(key: 'description');
-        $course->price = $request->input(key: 'price');
-        $course->cross_price = $request->input(key: 'cross_price');
+        $course->title = $request->title;
+        $course->category_id = $request->category;
+        $course->level_id = $request->level;
+        $course->language_id = $request->language;
+        $course->description = $request->description;
+        $course->price = $request->price;
+        $course->cross_price = $request->cross_price;
         $course->save();
         return response()->json([
             'status' => 200,

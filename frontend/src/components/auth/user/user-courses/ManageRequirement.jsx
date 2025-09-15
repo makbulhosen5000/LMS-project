@@ -5,21 +5,21 @@ import { apiUrl, userTokenLms } from '../../../common/Config'
 import { toast } from 'react-toastify'
 import { FaEdit, FaTrash, FaCheckCircle } from 'react-icons/fa'
 
-export default function ManageOutcome() {
-  const [outcomes, setOutcomes] = useState([])
+export default function ManageRequirement() {
+  const [requirements, setRequirements] = useState([])
   const [disable, setDisable] = useState(false)
   // update modal state for outcomes
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [currentOutcome, setCurrentOutcome] = useState(null)
+  const [currentRequirement, setCurrentRequirement] = useState(null)
   const [editValue, setEditValue] = useState('')
   const { id } = useParams()
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
-  // --- fetch outcomes ---
-  const fetchOutcome = async () => {
+  // --- fetch requirement ---
+  const fetchRequirement = async () => {
     try {
-      const response = await fetch(`${apiUrl}/outcomes?course_id=${id}`, {
+      const response = await fetch(`${apiUrl}/requirements?course_id=${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -29,26 +29,26 @@ export default function ManageOutcome() {
       })
       const result = await response.json()
       if (result.status === 200) {
-        setOutcomes(result.data)
+        setRequirements(result.data)
       } else {
-        toast.error(result.message || 'Failed to fetch outcomes')
+        toast.error(result.message || 'Failed to fetch requirement')
       }
     } catch (error) {
-      console.error('Error fetching outcome:', error)
-      toast.error('An error occurred while fetching the outcome.')
+      console.error('Error fetching requirement:', error)
+      toast.error('An error occurred while fetching the requirement.')
     }
   }
 
   useEffect(() => {
-    fetchOutcome()
+    fetchRequirement()
   }, [])
 
-  // --- Add new outcome ---
+  // --- Add new requirement ---
   const onSubmit = async (data) => {
     setDisable(true)
     const formData = { ...data, course_id: id }
     try {
-      const response = await fetch(`${apiUrl}/outcomes`, {
+      const response = await fetch(`${apiUrl}/requirements`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,70 +59,70 @@ export default function ManageOutcome() {
       })
       const result = await response.json()
       if (result.status === 200) {
-        toast.success(result.message || 'Outcome created successfully')
-        setOutcomes((prev) => [...prev, result.data]) // add new outcome instantly
+        toast.success(result.message || 'Requirement created successfully')
+        setRequirements((prev) => [...prev, result.data]) // add new requirement instantly
         reset()
       } else {
-        toast.error(result.message || 'Failed to create outcome')
+        toast.error(result.message || 'Failed to create requirement')
       }
     } catch (error) {
-      console.error('Error creating outcome:', error)
-      toast.error('An error occurred while creating the outcome.')
+      console.error('Error creating requirement:', error)
+      toast.error('An error occurred while creating the requirement.')
     } finally {
       setDisable(false)
     }
   }
 
   // --- Open edit modal ---
-  const openEditModal = (outcome) => {
-    setCurrentOutcome(outcome)
-    setEditValue(outcome.text)
+  const openEditModal = (requirement) => {
+    setCurrentRequirement(requirement)
+    setEditValue(requirement.description)
     setIsModalOpen(true)
   }
 
-  // --- Update outcome ---
+  // --- Update requirement ---
   const handleUpdate = async () => {
     if (!editValue.trim()) {
-      toast.error('Outcome cannot be empty')
+      toast.error('Requirement cannot be empty')
       return
     }
-
+  
     try {
-      const response = await fetch(`${apiUrl}/outcomes/${currentOutcome.id}`, {
+      const response = await fetch(`${apiUrl}/requirements/${currentRequirement.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userTokenLms()}`,
         },
-        body: JSON.stringify({ outcome: editValue, course_id: id }),
+        body: JSON.stringify({ requirement: editValue, course_id: id }),
       })
-
+  
       const result = await response.json()
       if (result.status === 200) {
-        toast.success('Outcome updated successfully')
-        setOutcomes((prev) =>
+        toast.success('Requirement updated successfully')
+        setRequirements((prev) =>
           prev.map((o) =>
-            o.id === currentOutcome.id ? { ...o, text: editValue } : o
+            o.id === currentRequirement.id ? { ...o, description: editValue } : o
           )
         )
         setIsModalOpen(false)
-        setCurrentOutcome(null)
+        setCurrentRequirement(null)
         setEditValue('')
       } else {
-        toast.error(result.message || 'Failed to update outcome')
+        toast.error(result.message || 'Failed to update requirement')
       }
     } catch (error) {
-      console.error('Error updating outcome:', error)
-      toast.error('An error occurred while updating the outcome.')
+      console.error('Error updating requirement:', error)
+      toast.error('An error occurred while updating the requirement.')
     }
   }
-
-  // --- Delete outcome ---
-  const handleDelete = async (outcomeId) => {
-    if (!window.confirm('Are you sure you want to delete this outcome?')) return
+  
+  // --- Delete requirement ---
+  const handleDelete = async (requirementId) => {
+    if (!window.confirm('Are you sure you want to delete this requirement?')) return
 
     try {
-      const response = await fetch(`${apiUrl}/outcomes/${outcomeId}`, {
+      const response = await fetch(`${apiUrl}/requirements/${requirementId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${userTokenLms()}`,
@@ -130,20 +130,20 @@ export default function ManageOutcome() {
       })
       const result = await response.json()
       if (result.status === 200) {
-        toast.success('Outcome deleted successfully')
-        setOutcomes((prev) => prev.filter((o) => o.id !== outcomeId))
+        toast.success('Requirement deleted successfully')
+        setRequirements((prev) => prev.filter((o) => o.id !== requirementId))
       } else {
-        toast.error(result.message || 'Failed to delete outcome')
+        toast.error(result.message || 'Failed to delete requirement')
       }
     } catch (error) {
-      console.error('Error deleting outcome:', error)
-      toast.error('An error occurred while deleting the outcome.')
+      console.error('Error deleting requirement:', error)
+      toast.error('An error occurred while deleting the requirement.')
     }
   }
 
   return (
     <div className="bg-white p-6 rounded-xl shadow">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">Outcome</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">Requirement</h3>
 
       {/* Add outcome form */}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
@@ -151,10 +151,10 @@ export default function ManageOutcome() {
           type="text"
           placeholder="Add an outcome"
           className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none mb-2"
-          {...register('outcome', { required: 'Outcome field is required' })}
+          {...register('requirement', { required: 'requirement field is required' })}
           disabled={disable}
         />
-        {errors.outcome && <p className="text-red-500 text-sm">{errors.outcome.message}</p>}
+        {errors.requirement && <p className="text-red-500 text-sm">{errors.requirement.message}</p>}
 
         <button
           type="submit"
@@ -167,24 +167,24 @@ export default function ManageOutcome() {
 
       {/* Outcome list */}
       <ul className="space-y-2 text-sm text-gray-700">
-        {outcomes && outcomes.map((outcome) => (
+        {requirements && requirements.map((requirement) => (
           <li
-            key={outcome.id}
+            key={requirement.id}
             className="bg-gray-100 px-3 py-2 rounded flex justify-between items-center"
           >
             <span className="flex items-center space-x-2">
               <FaCheckCircle className="text-green-600" />
-              <span>{outcome.text}</span>
+              <span>{requirement.description}</span>
             </span>
             <div className="flex space-x-3">
               <button
-                onClick={() => openEditModal(outcome)}
+                onClick={() => openEditModal(requirement)}
                 className="text-blue-600 hover:text-blue-800"
               >
                 <FaEdit />
               </button>
               <button
-                onClick={() => handleDelete(outcome.id)}
+                onClick={() => handleDelete(requirement.id)}
                 className="text-red-600 hover:text-red-800"
               >
                 <FaTrash />
@@ -198,7 +198,7 @@ export default function ManageOutcome() {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white w-96 p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">Edit Outcome</h2>
+            <h2 className="text-lg font-semibold mb-4">Edit Requirement</h2>
             <input
               type="text"
               value={editValue}

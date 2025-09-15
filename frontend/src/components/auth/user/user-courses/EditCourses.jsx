@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import ManageOutcome from "./ManageOutcome";
+import ManageRequirement from "./ManageRequirement";
 
 const CourseEdit = () => {
   const [categories, setCategories] = useState([]);
@@ -298,26 +299,7 @@ const CourseEdit = () => {
 
                 {/* Requirements */}
                 <div className="bg-white p-6 rounded-xl shadow">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                    Requirements
-                  </h3>
-                  <input
-                    type="text"
-                    placeholder="Add a requirement"
-                    className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none mb-2"
-                  />
-                  <button className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition mb-4">
-                    Save
-                  </button>
-
-                  <ul className="space-y-2 text-sm text-gray-700">
-                    <li className="bg-gray-100 px-3 py-2 rounded">
-                      A laptop or desktop computer with internet access
-                    </li>
-                    <li className="bg-gray-100 px-3 py-2 rounded">
-                      No previous coding experience required
-                    </li>
-                  </ul>
+                  <ManageRequirement/>
                 </div>
 
                 {/* Cover Image */}

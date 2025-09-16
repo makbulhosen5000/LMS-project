@@ -19,17 +19,20 @@ Route::get('/user', function (Request $request) {
 
 // middleware for user routes
 Route::group(['middleware' => ['auth:sanctum']],function(){
-    // user courses route
+    // courses route
     Route::post('/courses',[CourseController::class,'store']); 
     Route::get('/courses/meta-data',[CourseController::class,'metaData']); 
     Route::get('/courses/{id}',[CourseController::class,'show']); 
     Route::put('/courses/{id}',[CourseController::class,'update']); 
+    // course image upload
+    Route::post('/save-course-image/{id}',[CourseController::class,'saveCourseImage']);
+
+    
     // outcome routes
     Route::get('/outcomes',[OutcomeController::class,'index']);
     Route::post('/outcomes',[OutcomeController::class,'store']);
     Route::put('/outcomes/{id}',[OutcomeController::class,'update']);
     Route::delete('/outcomes/{id}',[OutcomeController::class,'destroy']);
-     // for sorting outcomes
     Route::post('/sort-outcomes',[OutcomeController::class,'sortOutcome']);
 
      // requirement routes
@@ -37,7 +40,6 @@ Route::group(['middleware' => ['auth:sanctum']],function(){
      Route::post('/requirements',[RequirementController::class,'store']);
      Route::put('/requirements/{id}',[RequirementController::class,'update']);
      Route::delete('/requirements/{id}',[RequirementController::class,'destroy']);
-     // for sorting requirements
      Route::post('/sort-requirements',[RequirementController::class,'sortRequirement']);
-     
+
 });

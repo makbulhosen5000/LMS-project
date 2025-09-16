@@ -12,7 +12,7 @@ class RequirementController extends Controller
     // this method return all requirement
     public function index(Request $request){
        $requirement = Requirement::where('course_id', request()->course_id)
-                                ->orderBy('sort_order')->get()->get();
+                                ->orderBy('sort_order','ASC')->get();
        return response()->json([
         "status"=>200,
         "data"=>$requirement
@@ -96,16 +96,26 @@ class RequirementController extends Controller
             "message"=>"Requirement deleted successfully"
         ]);
     }
-    //sort Requirement
-    public function sortRequirement(Request $request){
-        if(!empty($request->Requirement)){
-            foreach($request->Requirements as $key => $Requirement){
-                Requirement::where('id',$Requirement['id'])->update(['sort_order'=>$key]);
-            }
-            return response()->json([
-                "status"=>200,
-                "message"=>"Requirement sorted successfully"
+    //this method will sort Requirement
+    public function sortRequirement(Request $request)
+{
+    if (!empty($request->requirements)) {
+        foreach ($request->requirements as $key => $requirement) {
+            Requirement::where('id', $requirement['id'])->update([
+                'sort_order' => $key
             ]);
         }
+
+        return response()->json([
+            "status" => 200,
+            "message" => "Requirement sorted successfully"
+        ]);
     }
+
+    return response()->json([
+        "status" => 400,
+        "message" => "No requirements found"
+    ], 400);
+}
+
 }

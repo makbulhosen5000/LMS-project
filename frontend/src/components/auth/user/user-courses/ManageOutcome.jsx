@@ -176,13 +176,11 @@ export default function ManageOutcome() {
   } catch (error) {
     console.error('Error creating outcome:', error)
     toast.error('An error occurred while creating the outcome.')
-  } finally {
-    setDisable(false)
-  };
+  }
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow">
+    <div className="">
       <h3 className="text-lg font-semibold text-gray-800 mb-2">Outcome</h3>
 
       {/* Add outcome form */}
@@ -255,31 +253,6 @@ export default function ManageOutcome() {
                 )}
             </Droppable>
         </DragDropContext> 
-        {/* {outcomes && outcomes.map((outcome) => (
-          <li
-            key={outcome.id}
-            className="bg-gray-100 px-3 py-2 rounded flex justify-between items-center"
-          >
-            <span className="flex items-center space-x-2">
-              <FaCheckCircle className="text-green-600" />
-              <span>{outcome.text}</span>
-            </span>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => openEditModal(outcome)}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                <FaEdit />
-              </button>
-              <button
-                onClick={() => handleDelete(outcome.id)}
-                className="text-red-600 hover:text-red-800"
-              >
-                <FaTrash />
-              </button>
-            </div>
-          </li>
-        ))} */}
       </ul>
 
       {/* Edit Modal */}

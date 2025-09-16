@@ -10,7 +10,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 export default function ManageRequirement() {
   const [requirements, setRequirements] = useState([])
   const [disable, setDisable] = useState(false)
-  // update modal state for outcomes
+  // update modal state for requirement
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentRequirement, setCurrentRequirement] = useState(null)
   const [editValue, setEditValue] = useState('')
@@ -142,7 +142,7 @@ export default function ManageRequirement() {
       toast.error('An error occurred while deleting the requirement.')
     }
   }
-  // handle drag and drop for outcome
+  // handle drag and drop for requirement
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -172,11 +172,9 @@ export default function ManageRequirement() {
         toast.error(result.message)
       }
     } catch (error) {
-      console.error('Error creating outcome:', error)
-      toast.error('An error occurred while creating the outcome.')
-    } finally {
-      setDisable(false)
-    };
+      console.error('Error creating requirement:', error)
+      toast.error('An error occurred while creating the requirement.')
+    }
     }
 
   return (
@@ -203,7 +201,7 @@ export default function ManageRequirement() {
         </button>
       </form>
 
-      {/* Outcome list */}
+      {/* Requirement list */}
       <ul className="space-y-2 text-sm text-gray-700">
          <DragDropContext onDragEnd={handleDragEnd} >
                     <Droppable droppableId="list">
@@ -252,31 +250,6 @@ export default function ManageRequirement() {
                         )}
                     </Droppable>
                 </DragDropContext> 
-        {/* {requirements && requirements.map((requirement) => (
-          <li
-            key={requirement.id}
-            className="bg-gray-100 px-3 py-2 rounded flex justify-between items-center"
-          >
-            <span className="flex items-center space-x-2">
-              <FaCheckCircle className="text-green-600" />
-              <span>{requirement.description}</span>
-            </span>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => openEditModal(requirement)}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                <FaEdit />
-              </button>
-              <button
-                onClick={() => handleDelete(requirement.id)}
-                className="text-red-600 hover:text-red-800"
-              >
-                <FaTrash />
-              </button>
-            </div>
-          </li>
-        ))} */}
       </ul>
 
       {/* Edit Modal */}
@@ -290,7 +263,7 @@ export default function ManageRequirement() {
               onChange={(e) => setEditValue(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 mb-4 focus:ring-2 focus:ring-purple-500 focus:outline-none"
             />
-            {/* outcome update and cancel button */}
+            {/* Requirement update and cancel button */}
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setIsModalOpen(false)}

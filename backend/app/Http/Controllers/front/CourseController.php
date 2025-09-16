@@ -8,8 +8,10 @@ use App\Models\Course;
 use App\Models\Language;
 use App\Models\Level;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class CourseController extends Controller
 {
@@ -115,5 +117,66 @@ class CourseController extends Controller
             'levels' => $levels,
             'languages' => $languages,
         ], 200);
+    }
+
+    // this method upload and save course image
+    public function saveCourseImage($id, Request $request)
+    {
+    $course = Course::find($id);
+    if (!$course) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Course not found',
+        ], 404);
+    }
+
+    $rule = [
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ];
+    $validator = Validator::make($request->all(), $rule);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 422,
+            'message' => $validator->errors()->first(),
+        ], 422);
+    }
+
+    // delete old image
+    if ($course->image != null) {
+        if (File::exists(public_path('uploads/course/' . $course->image))) {
+            File::delete(public_path('uploads/course/' . $course->image));
+        }
+        if (File::exists(public_path('uploads/course/small/' . $course->image))) {
+            File::delete(public_path('uploads/course/small/' . $course->image));
+        }
+    }
+
+    // save new image
+    $image = $request->file('image');
+    $ext = $image->getClientOriginalExtension();
+    $imageName = time() . '-' . $id . '.' . $ext;
+    $image->move(public_path('uploads/course/'), $imageName);
+
+    // create thumbnail
+    $manager = new ImageManager(new Driver());
+
+    // make sure the small folder exists
+    if (!File::exists(public_path('uploads/course/small'))) {
+        File::makeDirectory(public_path('uploads/course/small'), 0755, true);
+    }
+
+    $img = $manager->read(public_path('uploads/course/' . $imageName));
+    $img->cover(750, 450); 
+    $img->save(public_path('uploads/course/small/' . $imageName));
+
+    // update db
+    $course->image = $imageName;
+    $course->save();
+
+    return response()->json([
+        'status' => 200,
+        'data' => $course,
+        'message' => 'Course image uploaded successfully',
+    ], 200);
     }
 }

@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom'
 import { apiUrl, userTokenLms } from '../../../common/Config'
 import { toast } from 'react-toastify'
 import { FaEdit, FaTrash, FaCheckCircle } from 'react-icons/fa'
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+
 
 export default function ManageRequirement() {
   const [requirements, setRequirements] = useState([])
@@ -140,16 +142,52 @@ export default function ManageRequirement() {
       toast.error('An error occurred while deleting the requirement.')
     }
   }
+  // handle drag and drop for outcome
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const reorderedItems = Array.from(requirements);
+    const [movedItem] = reorderedItems.splice(result.source.index, 1);
+    reorderedItems.splice(result.destination.index, 0, movedItem);
+
+    setRequirements(reorderedItems);
+    saveOrder(reorderedItems);
+  };
+  // save new order to the backend
+    const saveOrder = async (updatedRequirements) => {
+    try {
+      const response = await fetch(`${apiUrl}/sort-requirements`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${userTokenLms()}`,
+        },
+        body: JSON.stringify({requirements:updatedRequirements}),
+      })
+      const result = await response.json()
+      if (result.status === 200) {
+        toast.success(result.message)
+      } else {
+        toast.error(result.message)
+      }
+    } catch (error) {
+      console.error('Error creating outcome:', error)
+      toast.error('An error occurred while creating the outcome.')
+    } finally {
+      setDisable(false)
+    };
+    }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow">
+    <div>
       <h3 className="text-lg font-semibold text-gray-800 mb-2">Requirement</h3>
 
-      {/* Add outcome form */}
+      {/* Add Requirement form */}
       <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
         <input
           type="text"
-          placeholder="Add an outcome"
+          placeholder="Add an Requirement"
           className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none mb-2"
           {...register('requirement', { required: 'requirement field is required' })}
           disabled={disable}
@@ -167,7 +205,54 @@ export default function ManageRequirement() {
 
       {/* Outcome list */}
       <ul className="space-y-2 text-sm text-gray-700">
-        {requirements && requirements.map((requirement) => (
+         <DragDropContext onDragEnd={handleDragEnd} >
+                    <Droppable droppableId="list">
+                        {(provided) => (
+                            <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-2">
+                                {
+                                requirements.map((requirement, index) => (
+                                        <Draggable key={requirement.id} draggableId={`${requirement.id}`} index={index}>
+        
+                                        {(provided) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className="mt-2 border px-3 py-2 bg-white shadow-lg  rounded"
+                                              >
+                                                <li
+                                                  key={requirement.id}
+                                                  className="bg-gray-100 px-3 py-2 rounded flex justify-between items-center"
+                                                >
+                                                  <span className="flex items-center space-x-2">
+                                                    <FaCheckCircle className="text-green-600" />
+                                                    <span>{requirement.description}</span>
+                                                  </span>
+                                                  <div className="flex space-x-3">
+                                                    <button
+                                                      onClick={() => openEditModal(requirement)}
+                                                      className="text-blue-600 hover:text-blue-800"
+                                                    >
+                                                      <FaEdit />
+                                                    </button>
+                                                    <button
+                                                      onClick={() => handleDelete(requirement.id)}
+                                                      className="text-red-600 hover:text-red-800"
+                                                    >
+                                                      <FaTrash />
+                                                    </button>
+                                                  </div>
+                                                </li>
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext> 
+        {/* {requirements && requirements.map((requirement) => (
           <li
             key={requirement.id}
             className="bg-gray-100 px-3 py-2 rounded flex justify-between items-center"
@@ -191,7 +276,7 @@ export default function ManageRequirement() {
               </button>
             </div>
           </li>
-        ))}
+        ))} */}
       </ul>
 
       {/* Edit Modal */}

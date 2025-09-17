@@ -13,6 +13,7 @@ const CourseEdit = () => {
   const [categories, setCategories] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [levels, setLevels] = useState([]);
+  const [course, setCourse] = useState([]);
   const [disable, setDisable] = useState(false);
   const {id} = useParams();
    const {
@@ -45,6 +46,7 @@ const CourseEdit = () => {
             price:result.data.price,
             cross_price:result.data.cross_price,
            });
+           setCourse(result.data);
           } else {
             toast.error(result.message);
           }
@@ -140,173 +142,169 @@ const CourseEdit = () => {
         <UserSidebar />
 
         {/* Main Content */}
-        <main className="flex-1 pl-4">
+        <main className="flex-1">
           {/* Topbar */}
           <UserTopbar />
 
           {/* Page Container */}
-          <div className="max-w-7xl mx-auto pt-4">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div className="max-w-7xl mx-auto px-3 py-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
               {/* Left Section - Course Form */}
-              <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow">
-                <h2 className="text-xl font-bold mb-4">Course Edit</h2>
+              <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                  ✏️ Edit Course
+                </h2>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  
                   {/* Title */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Title
                     </label>
                     <input
                       type="text"
                       placeholder="Enter course title"
-                      {...register('title', { required: "Title field is required" })}
-                      className="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      {...register("title", { required: "Title is required" })}
+                      className={`w-full border rounded-lg px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+                        errors.title ? "border-red-500" : "border-gray-300"
+                      }`}
                     />
-                     {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
+                    {errors.title && (
+                      <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+                    )}
                   </div>
 
                   {/* Category & Level */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
                         Category
                       </label>
                       <select
-                      {...register('category', {
-                        required: "Please select a category",
-                      })}
-                      id="category"
-                      className={`w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.category ? 'is-invalid' : ''}`}
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        Select Status
-                      </option>
-                      {categories.map((category) => (
-                        <option key={category.id} value={String(category.id)}>
-                          {category.name}
-                        </option>
-                      ))}
+                        {...register("category", { required: "Select a category" })}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        defaultValue=""
+                      >
+                        <option value="" disabled>Select category</option>
+                        {categories.map((c) => (
+                          <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
                       </select>
-                     { errors.category && <span className="text-red-500 text-sm">{errors.category.message}</span>}
+                      {errors.category && (
+                        <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>
+                      )}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
                         Level
                       </label>
                       <select
-                      {...register('level', {
-                        required: "Please select a level",
-                      })}
-                      id="level"
-                      className={`w-full border border-red-400 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-red-600 ${errors.category ? 'is-invalid' : ''}`}
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        Select Status
-                      </option>
-                          {levels.map((level) => (
-                            <option key={level.id} value={String(level.id)}>
-                              {level.name}
-                            </option>
-                          ))}
-                        </select>
-                      {errors.level && <span className="text-red-500 text-sm">{errors.level.message}</span>}
-
+                        {...register("level", { required: "Select a level" })}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        defaultValue=""
+                      >
+                        <option value="" disabled>Select level</option>
+                        {levels.map((l) => (
+                          <option key={l.id} value={l.id}>{l.name}</option>
+                        ))}
+                      </select>
+                      {errors.level && (
+                        <p className="text-red-500 text-sm mt-1">{errors.level.message}</p>
+                      )}
                     </div>
                   </div>
 
                   {/* Language */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Language
                     </label>
                     <select
-                      {...register('language', {
-                        required: "Please select a language",
-                      })}
-                      id="language"
-                      className={`w-full border border-red-400 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-red-600 ${errors.category ? 'is-invalid' : ''}`}
+                      {...register("language", { required: "Select a language" })}
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                       defaultValue=""
                     >
-                      <option value="" disabled>
-                        Select Status
-                      </option>
-                      {languages.map((language) => (
-                        <option key={language.id} value={String(language.id)}>
-                          {language.name}
-                        </option>
+                      <option value="" disabled>Select language</option>
+                      {languages.map((lang) => (
+                        <option key={lang.id} value={lang.id}>{lang.name}</option>
                       ))}
-                      </select>
-                    {errors.language && <span className="text-red-500 text-sm">{errors.language.message}</span>}
+                    </select>
+                    {errors.language && (
+                      <p className="text-red-500 text-sm mt-1">{errors.language.message}</p>
+                    )}
                   </div>
 
                   {/* Description */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Description
                     </label>
                     <textarea
                       rows="4"
                       placeholder="Write about this course..."
                       {...register("description", { required: "Description is required" })}
-                      className="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     ></textarea>
-                    {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
+                    {errors.description && (
+                      <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+                    )}
                   </div>
 
                   {/* Pricing */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
                         Sell Price
                       </label>
                       <input
                         type="number"
-                        {...register("price", { required: true })}
-                        className="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        {...register("price", { required: "Price is required" })}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                       />
-                      {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
+                      {errors.price && (
+                        <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
+                      )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
                         Cross Price
                       </label>
                       <input
                         type="number"
                         {...register("cross_price")}
-                        className="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                       />
-                      
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
-                  >
-                    {disable ? "Updating..." : "Update"}
-                  </button>
+                  {/* Submit Button */}
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={disable}
+                      className="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50"
+                    >
+                      {disable ? "Updating..." : "Update Course"}
+                    </button>
+                  </div>
                 </form>
               </div>
 
               {/* Right Section */}
               <div className="space-y-6">
-                {/* Outcome */}
-                <ManageOutcome/>
-                {/* Requirements */}
-                <ManageRequirement/>
-                {/* Cover Image */}
-                <EditCover/>
+                <ManageOutcome />
+                <ManageRequirement />
+                <EditCover course={course} setCourse={setCourse} />
               </div>
             </div>
           </div>
         </main>
       </div>
-    </div>
+</div>
+
   );
 };
 

@@ -3,10 +3,13 @@ import { apiUrl, userTokenLms } from "../../../common/Config";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Loader from "../../../common/Loader";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 export default function ManageChapter({ course, id }) {
   const [disable, setDisable] = useState(false);
   const [loading, setLoading] = useState(false); 
+  const [openModal, setOpenModal] = useState(false); 
+  const [editChapter, setEditChapter] = useState(null); // 👈 store chapter for editing
 
   const chapterReducer = (state, action) => {
     switch (action.type) {
@@ -35,41 +38,95 @@ export default function ManageChapter({ course, id }) {
     formState: { errors },
   } = useForm();
 
-  // Store chapter
+  // store or update chapter
   const onSubmit = async (data) => {
     setDisable(true);
-    
     const fromData = { ...data, course_id: id };
 
     try {
-      const response = await fetch(`${apiUrl}/chapters`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${userTokenLms()}`,
-        },
-        body: JSON.stringify(fromData),
-      });
+      let response, result;
 
-      const result = await response.json();
+      if (editChapter) {
+        // Update
+        response = await fetch(`${apiUrl}/chapters/${editChapter.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${userTokenLms()}`,
+          },
+          body: JSON.stringify(fromData),
+        });
+      } else {
+        // Add new
+        response = await fetch(`${apiUrl}/chapters`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${userTokenLms()}`,
+          },
+          body: JSON.stringify(fromData),
+        });
+      }
+
+      result = await response.json();
 
       if (result.status === 200) {
-        setChapters({ type: "ADD_CHAPTER", payload: result.data });
-        toast.success(result.message || "Chapter created successfully");
+        if (editChapter) {
+          setChapters({ type: "UPDATE_CHAPTER", payload: result.data });
+          toast.success(result.message || "Chapter updated successfully");
+        } else {
+          setChapters({ type: "ADD_CHAPTER", payload: result.data });
+          toast.success(result.message || "Chapter created successfully");
+        }
+
         reset();
+        setEditChapter(null);
+        setOpenModal(false);
       } else if (result.errors) {
         Object.keys(result.errors).forEach((field) => {
           setError(field, { message: result.errors[field][0] });
         });
       }
     } catch (error) {
-      console.error("Error creating chapter:", error);
-      toast.error("An error occurred while creating the chapter.");
+      console.error("Error saving chapter:", error);
+      toast.error("An error occurred while saving the chapter.");
     } finally {
       setDisable(false);
-      
     }
+  };
+
+  // Delete chapter
+  const handleDelete = async (chapterId) => {
+    if (!window.confirm("Are you sure you want to delete this chapter?")) return;
+
+    try {
+      const response = await fetch(`${apiUrl}/chapters/${chapterId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${userTokenLms()}`,
+        },
+      });
+      const result = await response.json();
+
+      if (result.status === 200 || response.status === 204) {
+        setChapters({ type: "DELETE_CHAPTER", payload: chapterId });
+        toast.success(result.message || "Chapter deleted successfully");
+      } else {
+        toast.error(result.message || "Failed to delete chapter");
+      }
+    } catch (error) {
+      console.error("Error deleting chapter:", error);
+      toast.error("An error occurred while deleting the chapter.");
+    }
+  };
+
+  // open modal with prefilled data for edit
+  const handleEdit = (chapter) => {
+    setEditChapter(chapter);
+    reset({ chapter: chapter.title });
+    setOpenModal(true);
   };
 
   // Fetch chapters on load
@@ -91,68 +148,94 @@ export default function ManageChapter({ course, id }) {
 
   return (
     <>
-      <h2 className="text-2xl font-semibold text-gray-800 my-6">📘 Chapter</h2>
+      <div className="flex items-center justify-between my-6">
+        <h2 className="text-2xl font-semibold text-gray-800">📘 Chapter</h2>
+        <button
+          onClick={() => { setEditChapter(null); reset(); setOpenModal(true); }}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
+        >
+          ➕ Add Chapter
+        </button>
+      </div>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Title */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Title
-          </label>
-          <input
-            type="text"
-            placeholder="Enter course chapter"
-            {...register("chapter", { required: "Chapter title is required" })}
-            className={`w-full border rounded-lg px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-              errors.chapter ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.chapter && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.chapter.message}
-            </p>
-          )}
-        </div>
+      {/* Modal */}
+      {openModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 relative">
+            <button
+              onClick={() => setOpenModal(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              ✖
+            </button>
 
-        {/* Submit Button */}
-        <div className="pt-2">
-          <button
-            type="submit"
-            disabled={disable}
-            className="w-full sm:w-auto bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50"
-          >
-            {disable ? "Saving..." : "Save Chapter"}
-          </button>
+            <h3 className="text-xl font-semibold mb-4">
+              {editChapter ? "Edit Chapter" : "Add New Chapter"}
+            </h3>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter course chapter"
+                  {...register("chapter", {
+                    required: "Chapter title is required",
+                  })}
+                  className={`w-full border rounded-lg px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+                    errors.chapter ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.chapter && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.chapter.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={disable}
+                  className="w-full bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-green-700 transition disabled:opacity-50"
+                >
+                  {disable ? "Saving..." : editChapter ? "Update Chapter" : "Save Chapter"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
+      )}
 
       {/* Accordion Section */}
       <div className="mt-8 space-y-4">
         {loading ? (
-          <Loader /> // 👈 Loader only while fetching
+          <Loader />
         ) : chapters.length > 0 ? (
           chapters.map((chapter, index) => (
             <div key={chapter.id} className="border rounded-lg overflow-hidden">
-              <button className="w-full flex justify-between items-center px-4 py-3 text-left text-gray-800 font-medium bg-gray-100 hover:bg-gray-200">
+              <div className="flex justify-between items-center px-4 py-3 bg-gray-100 hover:bg-gray-200">
                 <span>
                   📂 Chapter {index + 1}: {chapter.title}
                 </span>
-                <svg
-                  className="w-5 h-5 text-gray-600 transform transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-              <p className="px-4 py-2 text-gray-600">Chapter content...</p>
+                <div className="space-x-2">
+                  <button
+                    onClick={() => handleEdit(chapter)}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                  <FiEdit size={18} />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(chapter.id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    
+                  <FiTrash2 size={18}/>
+                  </button>
+                </div>
+              </div>
             </div>
           ))
         ) : (

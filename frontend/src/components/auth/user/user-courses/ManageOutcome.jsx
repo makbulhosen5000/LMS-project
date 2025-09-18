@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
-import { apiUrl, userTokenLms } from '../../../common/Config'
-import { toast } from 'react-toastify'
-import { FaEdit, FaTrash, FaCheckCircle } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { apiUrl, userTokenLms } from '../../../common/Config';
+import { toast } from 'react-toastify';
+import { FaEdit, FaTrash, FaCheckCircle } from 'react-icons/fa';
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 

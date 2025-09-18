@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import ManageOutcome from "./ManageOutcome";
 import ManageRequirement from "./ManageRequirement";
 import EditCover from "./EditCover";
+import ManageChapter from "./ManageChapter";
 
 const CourseEdit = () => {
   const [categories, setCategories] = useState([]);
@@ -285,12 +286,14 @@ const CourseEdit = () => {
                     <button
                       type="submit"
                       disabled={disable}
-                      className="w-full sm:w-auto bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50"
+                      className="w-full sm:w-auto bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition disabled:opacity-50"
                     >
                       {disable ? "Updating..." : "Update Course"}
                     </button>
                   </div>
                 </form>
+                {/* manage chapter */}
+                <ManageChapter course={course} id={id} />
               </div>
 
               {/* Right Section */}

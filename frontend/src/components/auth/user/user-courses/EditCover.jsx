@@ -48,7 +48,7 @@ export default function EditCover({course, setCourse}) {
     />
       {
         course.course_small_image && 
-        <img src={course.course_small_image} alt="Course Cover" className="mt-4 w-32 h-32 object-cover rounded w-full" />
+        <img src={course.course_small_image} alt="Course Cover" className="mt-4 h-56 object-cover rounded w-full" />
       }
   </div>
   )

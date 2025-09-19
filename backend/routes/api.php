@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\front\ChapterController;
 use App\Http\Controllers\front\CourseController;
+use App\Http\Controllers\front\LessonController;
 use App\Http\Controllers\front\OutcomeController;
 use App\Http\Controllers\front\RequirementController;
 use App\Http\Controllers\front\UserAuthController;
@@ -50,5 +51,9 @@ Route::group(['middleware' => ['auth:sanctum']],function(){
     Route::delete('/chapters/{id}',[ChapterController::class,'destroy']);
     Route::post('/sort-chapters',[ChapterController::class,'sortChapter']);
 
+     // chapter routes
+    
+     Route::post('/lessons',[LessonController::class,'store']);
 
+     
 });

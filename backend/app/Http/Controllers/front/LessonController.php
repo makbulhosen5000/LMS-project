@@ -26,6 +26,7 @@ class LessonController extends Controller
         $lesson->chapter_id = $request->chapter_id;
         $lesson->title = $request->lesson;
         $lesson->sort_order = 1000;
+        $lesson->status = $request->status;
         $lesson->save();
 
         return response()->json([
@@ -61,13 +62,18 @@ class LessonController extends Controller
          // Update fields
          $lesson->chapter_id = $request->chapter_id;
          $lesson->title = $request->lesson;
-         $lesson->is_free =($request->is_free == 'false')? 'no' : 'yes';
+         $lesson->is_free_preview =($request->is_free_preview == 'false')? 'no' : 'yes';
+         $lesson->duration = $request->duration;
+         $lesson->duration = $request->duration;
+         $lesson->description = $request->description;
+         $lesson->description = $request->description;
+         $lesson->status = $request->status;
      
          $lesson->save();
      
          return response()->json([
              "status" => 200,
-             "message" => "chapter updated successfully",
+             "message" => "Lesson updated successfully",
              "data" => $lesson
          ], 200);
          }

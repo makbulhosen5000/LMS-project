@@ -78,7 +78,7 @@ class ChapterController extends Controller
         "message" => "chapter updated successfully",
         "data" => $chapter
     ], 200);
-    }
+}
 
 
     // this method delete chapter

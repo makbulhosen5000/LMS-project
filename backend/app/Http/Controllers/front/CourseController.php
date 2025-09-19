@@ -45,7 +45,7 @@ class CourseController extends Controller
      
     // this method return a specific course by id
     public function show($id){
-        $course = Course::with(relations: 'chapters')->find($id);
+        $course = Course::with(relations:[ 'chapters','chapters.lessons'])->find($id);
         if (!$course) {
             return response()->json([
                 'status' => 404,

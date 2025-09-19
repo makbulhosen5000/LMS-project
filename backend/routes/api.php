@@ -52,9 +52,10 @@ Route::group(['middleware' => ['auth:sanctum']],function(){
     Route::post('/sort-chapters',[ChapterController::class,'sortChapter']);
 
      // chapter routes
+     
      Route::post('/lessons',[LessonController::class,'store']);
      Route::put('/lessons/{id}',[LessonController::class,'update']);
-     Route::delete('/lessons/{id}',[LessonController::class,'destroy']);
+     Route::delete('/lessons/{id}',[LessonController::class,'update']);
 
      
 });

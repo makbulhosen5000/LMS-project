@@ -9,7 +9,7 @@ import ManageOutcome from "./ManageOutcome";
 import ManageRequirement from "./ManageRequirement";
 import EditCover from "./EditCover";
 import ManageChapter from "./ManageChapter";
-import ManageLesson from "./ManageLesson";
+import ManageLesson from "./CreateLesson";
 
 const CourseEdit = () => {
   const [categories, setCategories] = useState([]);
@@ -295,8 +295,6 @@ const CourseEdit = () => {
                 </form>
                 {/* manage chapter */}
                 <ManageChapter course={course} id={id} />
-                 {/* manage lesson */}
-                <ManageLesson course={course}/>
               </div>
 
               {/* Right Section */}

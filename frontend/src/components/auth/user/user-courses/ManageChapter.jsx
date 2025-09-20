@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Loader from "../../../common/Loader";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import CreateLesson from "./CreateLesson";
 
 export default function ManageChapter({ course, id }) {
   const [disable, setDisable] = useState(false);
@@ -148,15 +149,7 @@ export default function ManageChapter({ course, id }) {
 
   return (
     <>
-      <div className="flex items-center justify-between my-6">
-        <h2 className="text-2xl font-semibold text-gray-800">📘 Chapter</h2>
-        <button
-          onClick={() => { setEditChapter(null); reset(); setOpenModal(true); }}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 transition"
-        >
-          ➕ Add Chapter
-        </button>
-      </div>
+      <CreateLesson course={course}/>
 
       {/* Modal */}
       {openModal && (
@@ -205,12 +198,46 @@ export default function ManageChapter({ course, id }) {
                 </button>
               </div>
             </form>
+            
           </div>
         </div>
       )}
 
       {/* Accordion Section */}
       <div className="mt-8 space-y-4">
+        {/* chapter save by onSubmit */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter course chapter"
+                  {...register("chapter", {
+                    required: "Chapter title is required",
+                  })}
+                  className={`w-full border rounded-lg px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+                    errors.chapter ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.chapter && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.chapter.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={disable}
+                  className="w-32 bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-green-700 transition disabled:opacity-50"
+                >
+                  {disable ? "Saving...":"Save"}
+                </button>
+              </div>
+          </form>
         {loading ? (
           <Loader />
         ) : chapters.length > 0 ? (
@@ -218,7 +245,8 @@ export default function ManageChapter({ course, id }) {
             <div key={chapter.id} className="border rounded-lg overflow-hidden">
               <div className="flex justify-between items-center px-4 py-3 bg-gray-100 hover:bg-gray-200">
                 <span>
-                  📂 Chapter {index + 1}: {chapter.title}
+                  {/* 📂 Chapter {index + 1}: {chapter.title} */}
+                  {chapter.title}
                 </span>
                 <div className="space-x-2">
                   <button

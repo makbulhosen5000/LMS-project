@@ -9,7 +9,6 @@ import ManageOutcome from "./ManageOutcome";
 import ManageRequirement from "./ManageRequirement";
 import EditCover from "./EditCover";
 import ManageChapter from "./ManageChapter";
-import ManageLesson from "./CreateLesson";
 
 const CourseEdit = () => {
   const [categories, setCategories] = useState([]);

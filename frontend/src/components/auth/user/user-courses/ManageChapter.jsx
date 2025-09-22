@@ -232,9 +232,11 @@ export default function ManageChapter({ course, id }) {
                           lesson?.is_free_preview == 'yes' && 
                           <Link><span className="bg-green-800 px-2 py-1 rounded-lg text-white">Preview</span></Link>
                         }
-                        <button className="bg-blue-600 text-white p-1 gap-2 hover:bg-blue-800">
-                          <FiEdit size={16} />
-                        </button>
+                        <Link to={`/account/user/edit-lesson/${lesson?.id}/${course?.id}`}>
+                          <button className="bg-blue-600 p-1 text-white hover:bg-blue-800">
+                            <FiEdit size={16} />
+                          </button>
+                        </Link>
                         <button className="bg-red-600 p-1 text-white hover:bg-red-800">
                           <FiTrash2 size={16} />
                         </button>

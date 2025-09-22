@@ -37,6 +37,20 @@ class LessonController extends Controller
             'data' => $lesson
         ], 200);
     }
+    // this method will fetch lesson
+    public function show($id){
+        $lesson = Lesson::find($id);
+        if(!$lesson){
+            return response()->json([
+                "status"=>404,
+                "message"=>"lesson not found"
+            ],404);
+        }
+        return response()->json([
+            "status"=>200,
+            "data"=>$lesson
+        ],200);
+    }
      // this method update lesson
      public function update(Request $request, $id)
      {

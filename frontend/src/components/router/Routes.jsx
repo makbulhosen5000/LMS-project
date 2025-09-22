@@ -36,6 +36,7 @@ import CourseDetails from "../pages/course/CourseDetails";
 import MyCourses from "../auth/user/user-courses/Courses";
 import CreateCourse from "../auth/user/user-courses/CreateCourses";
 import EditCourse from "../auth/user/user-courses/EditCourses";
+import EditLesson from "../auth/user/user-courses/EditLesson";
 
 
 export const router = createBrowserRouter([
@@ -93,6 +94,14 @@ export const router = createBrowserRouter([
           element:(
             <UserPrivateRoute>
              <EditCourse/>
+            </UserPrivateRoute>
+          )
+        },
+        {
+          path:"/account/user/edit-lesson/:id/:courseId",
+          element:(
+            <UserPrivateRoute>
+             <EditLesson/>
             </UserPrivateRoute>
           )
         },

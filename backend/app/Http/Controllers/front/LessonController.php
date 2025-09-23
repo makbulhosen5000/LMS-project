@@ -14,8 +14,8 @@ class LessonController extends Controller
     // this method store lesson
     public function store(Request $request){
         $validator = Validator::make($request->all(),[
-            'lesson'=>'required',
             'chapter'=>'required',
+            'lesson'=>'required',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -92,7 +92,7 @@ class LessonController extends Controller
              "message" => "Lesson updated successfully",
              "data" => $lesson
          ], 200);
-    }
+     }
     // this method delete chapter
     public function destroy($id)
     {

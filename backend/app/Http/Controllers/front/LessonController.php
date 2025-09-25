@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Chapter;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class LessonController extends Controller
@@ -110,6 +110,50 @@ class LessonController extends Controller
         "status" => 200,
         "message" => "Lesson deleted successfully"
     ], 200);
+    }
+    
+    // this method will upload course lesson video
+    public function saveLessonVideo($id, Request $request)
+{
+    $lesson = Lesson::find($id);
+    if (!$lesson) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Lesson not found',
+        ], 404);
+    }
+
+    $rules = [
+        'video' => 'required|file|mimes:mp4,mov,qt|max:51200',
+    ];
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 422,
+            'message' => $validator->errors()->first(),
+        ], 422);
+    }
+
+    if ($lesson->video && File::exists(public_path('uploads/course/videos/' . $lesson->video))) {
+        File::delete(public_path('uploads/course/videos/' . $lesson->video));
+    }
+
+    $video = $request->file('video');
+    $ext = $video->getClientOriginalExtension();
+    $videoName = time() . '-' . $id . '.' . $ext;
+    $video->move(public_path('uploads/course/videos'), $videoName);
+
+    $lesson->video = $videoName;
+    $lesson->save();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Video uploaded successfully',
+        'file' => $videoName,
+    ], 200);
 }
+
+
 
 }

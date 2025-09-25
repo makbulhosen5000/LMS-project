@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import Loader from "../../../common/Loader";
+import LessonVideo from "./LessonVideo";
 
 const EditLesson = ({ placeholder }) => {
   const [disable, setDisable] = useState(false);
@@ -235,7 +236,7 @@ const EditLesson = ({ placeholder }) => {
                     />
                     <label className="block text-sm font-medium text-gray-700 mb-1">Free Lesson</label>
                   </div>
-
+                 
                   {/* Submit Button */}
                   <div className="pt-2">
                     <button
@@ -272,7 +273,9 @@ const EditLesson = ({ placeholder }) => {
               </div>
 
               {/* Right Section */}
-              <div className="space-y-6"></div>
+              <div className="space-y-6">
+              <LessonVideo lesson={lesson}/>
+              </div>
             </div>
           </div>
         </main>

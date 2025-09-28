@@ -1,4 +1,4 @@
-import React, { use } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FilePond, registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
@@ -7,15 +7,29 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import { apiUrl, userTokenLms } from '../../../common/Config'
 import { toast } from 'react-toastify'
+import ReactPlayer from 'react-player'
+
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,FilePondPluginFileValidateType)
 
 export default function LessonVideo({lesson}) {
-    const [files, setFiles] = React.useState([])
+    const [files, setFiles] = useState([])
+    const [videoUrl, setVideoUrl] = useState();
+
+  useEffect(() => {
+    if(lesson){
+      setVideoUrl(lesson?.video_url);
+    }
+  }
+  , [lesson]) 
+
+
+
   return (
     <div className="bg-white p-3 rounded-xl shadow">
     <h3 className="text-lg font-semibold text-gray-800 mb-2">
-      Cover image
+      Lesson Video
     </h3>
+    
     <FilePond
       acceptedFileTypes={['video/mp4']}
       credits={false} 
@@ -31,10 +45,12 @@ export default function LessonVideo({lesson}) {
                   'Authorization': `Bearer ${userTokenLms()}` 
               },
               onload: (response) => {
-                  response = JSON.parse(response);
-                  toast.success(response.message)
-                  setFiles([]);
-              },
+                const res = JSON.parse(response);
+                console.log("response from video upload",res.data.video_url);
+                toast.success(res.message);
+                setVideoUrl(res.data.video_url);
+                setFiles([]);
+            },
               onerror: (errors) => {
                   console.log(errors)
               },
@@ -44,10 +60,17 @@ export default function LessonVideo({lesson}) {
       labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
       
     />
-      {/* {
-        course.course_small_image && 
-        <img src={course.course_small_image} alt="Course Cover" className="mt-4 h-56 object-cover rounded w-full" />
-      } */}
+    {
+     
+      videoUrl &&
+      <ReactPlayer
+      width="100%"
+      height="100%"
+      src={videoUrl}
+      controls
+       />
+       
+    }
   </div>
   )
 }

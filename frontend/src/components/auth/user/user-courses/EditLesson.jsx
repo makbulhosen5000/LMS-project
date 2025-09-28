@@ -5,9 +5,10 @@ import UserTopbar from "../user-dashboard/UserTopBar";
 import { apiUrl, userTokenLms } from "../../../common/Config";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Loader from "../../../common/Loader";
 import LessonVideo from "./LessonVideo";
+
 
 const EditLesson = ({ placeholder }) => {
   const [disable, setDisable] = useState(false);
@@ -49,7 +50,7 @@ const EditLesson = ({ placeholder }) => {
       });
 
       const result = await response.json();
-
+      console.log(result)
       if (result.status === 200) {
         toast.success(result.message);
       } else {
@@ -144,10 +145,13 @@ const EditLesson = ({ placeholder }) => {
               
               {/* Left Section - Course Form */}
               <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6">
                   ✏️ Edit Lesson
                 </h2>
+                <Link to={`/account/user/edit-course/${params.id}`} className="text-white p-3 rounded-lg bg-green-600">Back</Link>
 
+                </div>
                 <form
                   onSubmit={handleSubmit(onSubmit)}
                   className={`space-y-6 ${disable ? 'opacity-50 pointer-events-none' : ''}`}

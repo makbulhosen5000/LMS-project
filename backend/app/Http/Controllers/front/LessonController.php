@@ -124,7 +124,7 @@ class LessonController extends Controller
     }
 
     $rules = [
-        'video' => 'required|file|mimes:mp4,mov,qt|max:204800',
+        'video' => 'required',
     ];
     $validator = Validator::make($request->all(), $rules);
 
@@ -145,16 +145,16 @@ class LessonController extends Controller
     $video->move(public_path('uploads/course/videos'), $videoName);
 
     $lesson->video = $videoName;
-    $lesson->save(); 
-    
+    $lesson->save();
 
     return response()->json([
         'status' => 200,
         'message' => 'Video uploaded successfully',
-        'file' => $videoName,
+        'data' => [
+            'video_url' => url('uploads/course/videos/' . $videoName) 
+        ]
     ], 200);
-    
-    }
+}
 
 
 
